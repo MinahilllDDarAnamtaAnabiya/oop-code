@@ -1,24 +1,32 @@
 # include<iostream>
+# include <fstream>
+# include <string>
+# include<cstring>
+
 using namespace std;
 
 class student{
 	
 	public:
+		
+    string name;
 	int id;
-	string name;
 	int sem;
 	float cgpa;
 	bool isfemale;
 	
 	public:
 	student(){
-		 id = 0;
+		 
 		 name = " ";
+		 id = 0;
 		 sem = 0;
 		 cgpa = 0.0;
 		 isfemale = true;
 	}
 	student(string name, int id, int sem, float cgpa, bool isfemale){
+	
+		cout<<" Parametric Constructor"<<endl;
 		this -> name = name;
 		this -> id = id;
 		this -> sem = sem;
@@ -26,23 +34,27 @@ class student{
 		this -> isfemale = isfemale;
 	}
 	student(int id, string name){
-		this -> id = id;
+		
 		this -> name = name;
+		this -> id = id;
 	}
 	
 	student(int id, string name, float cgpa){
-		this -> id = id;
+		
 		this -> name = name;
+		this -> id = id;
 		this -> cgpa = cgpa;
 	}
 	student(int id, string name, bool isfemale){
-		this -> id = id;
+		
 		this -> name = name;
+		this -> id = id;
 		this -> isfemale = isfemale;
 	}
 	
 	student (student & std){
 		
+		cout<<"copy constructor"<<endl;
 		name = std . name;
 		id = std . id;
 		sem = std . sem;
@@ -54,21 +66,128 @@ class student{
 		cout<<" Destructuring process is running";
 	}
 	
+	void display(){
+		
+		cout<<" Name: \t"<<name;
+		cout<<" Sap ID: \t\t"<<id;
+		cout<<" Semester: \t\t"<<sem;
+		cout<<" CGPA: \t\t"<<cgpa;
+		cout<<" Gender: \t";
+		if(isfemale){
+			cout<<"Female";
+		}else{
+			cout<<"Male";
+		}
+		cout<<endl;
+	}
+	
 };
+
+void get_data(){
+	
+	cout<<"--------------- Data Entery ---------------------"<<endl;
+	string name;
+	int id;
+	int sem;
+	float cgpa;
+	bool isfemale;
+	
+	cout<<" Name: ";
+	cin.ignore();
+	getline(cin, name);
+	cout<<" SAP ID: ";
+	cin>>id;
+	cout<<" Semester: ";
+	cin>>sem;
+	cout<<" CGPA: ";
+	cin>>cgpa;
+	cout<<" Gender: ";
+	char g;
+	cin>>g;
+	isfemale = (g == 'F' || 'f')? true:false;
+	
+    student std(name, id, sem, cgpa, isfemale);
+    
+    ofstream fout;
+    fout.open("student.txt",ios_base::app);
+    fout<<name<< " " <<id<< " " <<sem<< " " <<cgpa<< " " <<g;
+    cout<<"\n\n";
+    fout.close();
+}
+
+void showStudentData(){
+	
+	cout<<" -------------------- Student Record ------------------"<<endl;
+	ifstream fin;
+	fin.open("student.txt");
+	
+	class data{
+		
+	public:
+		
+    string name;
+	int id;
+	int sem;
+	float cgpa;
+	bool isfemale;
+	
+	};
+	
+	char* ptr1 = &data.name;
+	ptr1 = strtok(data," ");
+	cout<<"Name: "<<ptr1<<endl;
+	
+	char* ptr2 = &data.id;
+	ptr2 = strtok(NULL," ");
+	cout<<"SAP ID: "<<ptr2<<endl;
+	
+	char* ptr3 = &data.sem;
+	ptr3 = strtok(NULL," ");
+	cout<<"Semester: "<<ptr3<<endl;
+	
+	char* ptr4 = &data.cgpa;
+	ptr4 = strtok(NULL," ");
+	cout<<"CGPA: "<<ptr4;
+	
+	char* ptr5 = &data.isfemale;
+	ptr5 = strtok(NULL," ");
+	cout<<"Gender: "<<ptr5;
+	
+	cout<<"\n\n";
+
+	fin.close();
+}
 
 int main(){
 	
-	student s1("ali", 56784, 2, 3.56, false);
-	student s2("hira", 56785, 2, 2.56, true);
-	student s3("sara", 56786, 2, 3.6, true);
-	cout<<" Details: "<<endl;
-	cout<<" Name: "<<s1.name<<endl;
-	cout<<" Sap ID: "<<s1.id<<endl;
-	cout<<" Semester: "<<s1.sem<<endl;
-	cout<<" CGPA: "<<s1.cgpa<<endl;
-	cout<<" Gender: "<<s1.isfemale<<endl;
+	string line;
+	int choice;
+	do{
+		
+		system("cls");
+		cout<<"----------------- Student Portal --------------------"<<endl;
+		cout<<"1. Enter Student Detail"<<endl;
+		cout<<"2. See all Student detail"<<endl;
+		cout<<"3. Exit"<<endl;
+		cout<<" Enter Option: ";
+		cin>>choice;
+		
+		switch(choice){
+			case 1:
+				get_data();
+				break;
+			case 2:
+				showStudentData();
+			    cin.ignore();
+			    getline(cin,line);
+			break;
+			case 3:
+				cout<<"Thank You"<<endl;
+				break;
+			default:
+				cout<<"Enter the valid option"<<endl;
+		}
+		
+	}while(choice < 3);
 	
-	student std1 (student);
-	student std2 (student);
-	student std3 (student);
-	}
+}
